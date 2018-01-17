@@ -1,0 +1,72 @@
+{
+  "name": "queryCraft-pipelines",
+  "version": "0.0.0",
+  "description": "Data query abstraction layer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "prebuild": "npm run test",
+    "build": "tsc",
+    "postbuild": "npm run docs",
+    "start": "mocha --watch lib/*.* --watch-extensions ts --bail",
+    "predocs": "rm -rf docs/",
+    "docs": "typedoc --excludeExternals --exclude '**/*.test.ts' --mode file --theme minimal --out ./docs --tsconfig tsconfig.json lib/",
+    "postdocs": "touch docs/.nojekyll",
+    "serve:docs": "http-server -p 8000 docs/",
+    "serve:cov": "http-server -p 8001 coverage/",
+    "test": "nyc mocha --reporter mocha-junit-reporter",
+    "test:cov": "nyc npm test",
+    "posttest:cov": "nyc report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeameryHQ/QueryCraft-Pipelines.git"
+  },
+  "author": "Dayo Adeyemi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BeameryHQ/QueryCraft-Pipelines/issues"
+  },
+  "homepage": "https://github.com/BeameryHQ/QueryCraft-Pipelines#readme",
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.44",
+    "chai": "^4.1.2",
+    "http-server": "^0.10.0",
+    "mocha": "^4.0.1",
+    "mocha-junit-reporter": "^1.15.0",
+    "nyc": "^11.3.0",
+    "querycraft": "^0.0.16",
+    "source-map-support": "^0.5.0",
+    "ts-node": "^3.3.0",
+    "typedoc": "^0.9.0",
+    "typescript": "^2.6.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "include": [
+      "lib/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "all": true
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "querycraft": "^0.0.16"
+  }
+}
