@@ -1,6 +1,6 @@
 {
   "name": "querycraft-pipelines",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Data query abstraction layer",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -65,8 +65,7 @@
     ],
     "all": true
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "peerDependencies": {
     "querycraft": "^0.0.16"
   }
