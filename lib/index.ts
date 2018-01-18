@@ -6,10 +6,10 @@ export interface BucketOptions {
     fieldId: string
     size?: number
     values?: string[]
-    subFieldId?: string
     subFieldIds?: string[]
     subFieldProp?: string
     dateInterval?: string
+    interval?: string
     buckets?: BucketOptions
 }
 
