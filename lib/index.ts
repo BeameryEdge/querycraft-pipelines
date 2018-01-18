@@ -19,6 +19,12 @@ interface Bucket {
     buckets: Bucket[]
 }
 
+/**
+ * Main class for building aggregation pipelines
+ *
+ * @export
+ * @class Pipeline
+ */
 export default class Pipeline {
     operations: Array<PipelineOperation> = []
     filter(qb: QueryBuilder){
