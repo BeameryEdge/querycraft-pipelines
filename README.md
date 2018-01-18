@@ -1,18 +1,16 @@
-# QueryCraft-Pipelines-To-Function
+# QueryCraft-Pipelines
 Database agnostic formulation for data pipelines
 
-[![NPM](https://nodei.co/npm/QueryCraft-Pipelines.png)](https://npmjs.org/package/QueryCraft-Pipelines)
+[![NPM](https://nodei.co/npm/QueryCraft-Pipelines.png)](https://npmjs.org/package/querycraft-pipelines)
 
-[![npm version](https://badge.fury.io/js/QueryCraft-Pipelines.svg)](https://badge.fury.io/js/QueryCraft-Pipelines)
-[![CircleCI](https://circleci.com/gh/BeameryHQ/QueryCraft-Pipelines.svg?style=shield)](https://circleci.com/gh/BeameryHQ/QueryCraft-Pipelines)
+[![npm version](https://badge.fury.io/js/querycraft-pipelines.svg)](https://badge.fury.io/js/querycraft-pipelines)
 [![codecov](https://codecov.io/gh/BeameryHQ/QueryCraft-Pipelines/branch/master/graph/badge.svg)](https://codecov.io/gh/BeameryHQ/QueryCraft-Pipelines)
-[![David deps](https://david-dm.org/BeameryHQ/QueryCraft-Pipelines.svg)](https://david-dm.org/BeameryHQ/QueryCraft-Pipelines)
 [![Known Vulnerabilities](https://snyk.io/test/github/beameryhq/QueryCraft-Pipelines/badge.svg)](https://snyk.io/test/github/beameryhq/QueryCraft-Pipelines)
 
 ## Installation
 
 ```sh
-npm install --save 'QueryCraft-Pipelines'
+npm install --save 'querycraft-pipelines'
 ```
 
 ## Examples
