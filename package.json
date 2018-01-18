@@ -1,5 +1,5 @@
 {
-  "name": "queryCraft-pipelines",
+  "name": "querycraft-pipelines",
   "version": "0.0.0",
   "description": "Data query abstraction layer",
   "main": "dist/index.js",
