@@ -43,7 +43,6 @@
     "querycraft": "^0.0.16",
     "source-map-support": "^0.5.0",
     "ts-node": "^3.3.0",
-    "typedoc": "^0.9.0",
     "typescript": "^2.6.2"
   },
   "nyc": {
@@ -65,7 +64,9 @@
     ],
     "all": true
   },
-  "dependencies": {},
+  "dependencies": {
+    "typedoc": "^0.9.0"
+  },
   "peerDependencies": {
     "querycraft": "^0.0.16"
   }

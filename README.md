@@ -32,39 +32,42 @@ interface contact {
 }
 ```
 
-If we want a query the describes the logic:-
+If we want an aggregations the describes the logic:-
 ```
-    first 50 items where
+
+    where
         fistName is bob
         lastName is doyle OR is not set
         assignedTo is anything
         list has an item where id is item1
-    sorted (in ascending order) by the value property of the customField where id is custom1
-    created less than 5 days ago
+    Group by
+        the value property of the customField where id is custom1
+
 ```
 
 We can build build it as easily as:-
 
 ```ts
 import { FilterBuilder, eq, lt, neq, any, find, where } from 'querycraft'
-import apply from 'QueryCraft-Pipelines'
+import { Pipeline } from 'querycraft-pipelines'
 
 const contacts: contact[] =  [ ... ]
 
-const filter = new FilterBuilder()
-.where('firstName', eq('bob'))
-.where('list', find(where('id', eq('ite,1'))))
-.where('lastName', any([
-    eq('doyle'),
-    eq(null)
-]))
-.where('createdAt', lt({ daysAgo: 5 }))
-.where('assignedTo', neq(null))
-.setSortFieldId('customFields', 'custom1', 'value')
-.setSortDirection('ASC')
-.setLimit(50)
-
-console.log(apply(filter, contacts))
-// -> filtered list of contacts
+const pipeline = new Pipeline()
+.filter(
+    where('firstName', eq('bob'))
+    .where('list', find(where('id', eq('item1'))))
+    .where('lastName', any([
+        eq('doyle'),
+        eq(null)
+    ]))
+    .where('createdAt', lt({ daysAgo: 5 }))
+    .where('assignedTo', neq(null))
+)
+.buckets({
+    fieldId: 'CustomFields',
+    subFieldIds: ['custom1'],
+    subFieldProp: 'value',
+})
 
 ```

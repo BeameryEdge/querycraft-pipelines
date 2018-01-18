@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>queryCraft-pipelines | queryCraft-pipelines</title>
+	<title>querycraft-pipelines | querycraft-pipelines</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -879,7 +879,7 @@ img { max-width: 100%; }
 		<div class="container">
 			<div class="table-wrap">
 				<div class="table-cell">
-					<strong><a href="index.html">queryCraft-pipelines</a></strong>
+					<strong><a href="index.html">querycraft-pipelines</a></strong>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -925,7 +925,7 @@ img { max-width: 100%; }
 	<div class="content-wrap">
 		<div class="tsd-panel tsd-typography">
 			<h1 id="querycraft-pipelines-to-function">QueryCraft-Pipelines-To-Function</h1>
-			<p>Converts a QueryCraft Filter Builder object into a function to filter arrays of objects.</p>
+			<p>Database agnostic formulation for data pipelines</p>
 			<p><a href="https://npmjs.org/package/QueryCraft-Pipelines"><img src="https://nodei.co/npm/QueryCraft-Pipelines.png" alt="NPM"></a></p>
 			<p><a href="https://badge.fury.io/js/QueryCraft-Pipelines"><img src="https://badge.fury.io/js/QueryCraft-Pipelines.svg" alt="npm version"></a>
 				<a href="https://circleci.com/gh/BeameryHQ/QueryCraft-Pipelines"><img src="https://circleci.com/gh/BeameryHQ/QueryCraft-Pipelines.svg?style=shield" alt="CircleCI"></a>
@@ -948,35 +948,37 @@ img { max-width: 100%; }
     assignedTo?: <span class="hljs-built_in">string</span>
 }
 </code></pre>
-			<p>If we want a query the describes the logic:-</p>
-			<pre><code>    <span class="hljs-keyword">first</span> <span class="hljs-number">50</span> items <span class="hljs-keyword">where</span>
+			<p>If we want an aggregations the describes the logic:-</p>
+			<pre><code>
+    <span class="hljs-keyword">where</span>
         fistName <span class="hljs-keyword">is</span> bob
         lastName <span class="hljs-keyword">is</span> doyle OR <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">set</span>
         assignedTo <span class="hljs-keyword">is</span> anything
         <span class="hljs-built_in">list</span> has an <span class="hljs-built_in">item</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">id</span> <span class="hljs-keyword">is</span> item1
-    sorted (<span class="hljs-keyword">in</span> ascending order) <span class="hljs-keyword">by</span> <span class="hljs-keyword">the</span> value <span class="hljs-keyword">property</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> customField <span class="hljs-keyword">where</span> <span class="hljs-built_in">id</span> <span class="hljs-keyword">is</span> custom1
-    created <span class="hljs-keyword">less than</span> <span class="hljs-number">5</span> days ago
+    Group <span class="hljs-keyword">by</span>
+        <span class="hljs-keyword">the</span> value <span class="hljs-keyword">property</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">the</span> customField <span class="hljs-keyword">where</span> <span class="hljs-built_in">id</span> <span class="hljs-keyword">is</span> custom1
 </code></pre><p>We can build build it as easily as:-</p>
 			<pre><code class="lang-ts"><span class="hljs-keyword">import</span> { FilterBuilder, eq, lt, neq, <span class="hljs-built_in">any</span>, find, where } <span class="hljs-keyword">from</span> <span class="hljs-string">'querycraft'</span>
-<span class="hljs-keyword">import</span> apply <span class="hljs-keyword">from</span> <span class="hljs-string">'QueryCraft-Pipelines'</span>
+<span class="hljs-keyword">import</span> { Pipeline } <span class="hljs-keyword">from</span> <span class="hljs-string">'querycraft-pipelines'</span>
 
 <span class="hljs-keyword">const</span> contacts: contact[] =  [ ... ]
 
-<span class="hljs-keyword">const</span> filter = <span class="hljs-keyword">new</span> FilterBuilder()
-.where(<span class="hljs-string">'firstName'</span>, eq(<span class="hljs-string">'bob'</span>))
-.where(<span class="hljs-string">'list'</span>, find(where(<span class="hljs-string">'id'</span>, eq(<span class="hljs-string">'ite,1'</span>))))
-.where(<span class="hljs-string">'lastName'</span>, <span class="hljs-built_in">any</span>([
-    eq(<span class="hljs-string">'doyle'</span>),
-    eq(<span class="hljs-literal">null</span>)
-]))
-.where(<span class="hljs-string">'createdAt'</span>, lt({ daysAgo: <span class="hljs-number">5</span> }))
-.where(<span class="hljs-string">'assignedTo'</span>, neq(<span class="hljs-literal">null</span>))
-.setSortFieldId(<span class="hljs-string">'customFields'</span>, <span class="hljs-string">'custom1'</span>, <span class="hljs-string">'value'</span>)
-.setSortDirection(<span class="hljs-string">'ASC'</span>)
-.setLimit(<span class="hljs-number">50</span>)
-
-<span class="hljs-built_in">console</span>.log(apply(filter, contacts))
-<span class="hljs-comment">// -&gt; filtered list of contacts</span>
+<span class="hljs-keyword">const</span> pipeline = <span class="hljs-keyword">new</span> Pipeline()
+.filter(
+    where(<span class="hljs-string">'firstName'</span>, eq(<span class="hljs-string">'bob'</span>))
+    .where(<span class="hljs-string">'list'</span>, find(where(<span class="hljs-string">'id'</span>, eq(<span class="hljs-string">'item1'</span>))))
+    .where(<span class="hljs-string">'lastName'</span>, <span class="hljs-built_in">any</span>([
+        eq(<span class="hljs-string">'doyle'</span>),
+        eq(<span class="hljs-literal">null</span>)
+    ]))
+    .where(<span class="hljs-string">'createdAt'</span>, lt({ daysAgo: <span class="hljs-number">5</span> }))
+    .where(<span class="hljs-string">'assignedTo'</span>, neq(<span class="hljs-literal">null</span>))
+)
+.buckets({
+    fieldId: <span class="hljs-string">'CustomFields'</span>,
+    subFieldIds: [<span class="hljs-string">'custom1'</span>],
+    subFieldProp: <span class="hljs-string">'value'</span>,
+})
 </code></pre>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
@@ -1013,7 +1015,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">Pipeline<wbr>Operation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"filter"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">QueryBuilder</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"buckets"</span><span class="tsd-signature-symbol">, </span><a href="interfaces/bucketoptions.html" class="tsd-signature-type">BucketOptions</a><span class="tsd-signature-symbol">]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in index.ts:3</li>
+						<li>Defined in <a href="https://github.com/BeameryHQ/QueryCraft-Pipelines/blob/cc5447a/lib/index.ts#L3">index.ts:3</a></li>
 					</ul>
 				</aside>
 			</section>
